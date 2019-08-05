@@ -1,0 +1,97 @@
+<script type="text/javascript">
+    RED.nodes.registerType('prev-state', {
+        category: 'MYY',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            durationType: {value:"seconds"},
+            maxDuration: {value:0,required:true,validate:RED.validators.number()},
+            maxDurationType: {value:"days",required:true},
+            onStartup: {value:"restore"},
+            startupValue: {value:"0",required:false},
+            silentReset: {value:"0",required:false},
+        },
+        inputs:1,
+        outputs:1,
+        icon: "serial.png",
+        label: function() {
+            return this.name||"Prev State";
+        },
+        paletteLabel: "Prev State",
+        oneditprepare: function() {
+            this.maxDuration = !this.maxDuration ? 0 : this.maxDuration;
+            this.durationType = !this.durationType ? "seconds" : this.durationType;
+            this.maxDurationType = !this.maxDurationType ? "days" : this.maxDurationType;
+            this.onStartup = !this.onStartup ? "restore" : this.onStartup;
+            this.startupValue = !this.startupValue ? "0" : this.startupValue;
+            this.silentReset = !this.silentReset ? "0" : this.silentReset;
+
+            $("#node-input-durationType").val(this.durationType);
+            $("#node-input-silentReset").val(this.silentReset);
+            $("#node-input-maxDurationType").val(this.maxDurationType);
+
+            $("#node-input-onStartup").val(this.onStartup);
+            if (this.onStartup != "defvalue") $("#node-input-startupValue").hide();
+
+            $("#node-input-onStartup").change(function () {
+				if ($("#node-input-onStartup").val() == "defvalue") {
+					$("#node-input-startupValue").show();
+				} else {
+                    $("#node-input-startupValue").hide();
+                }
+			})
+        }
+
+    });
+</script>
+<style>
+    .check_text { float: left; margin-left: 0px; }
+    input[type=checkbox] { vertical-align:top; position:relative; bottom:1px; } 
+</style>
+<script type="text/x-red" data-template-name="prev-state">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-durationType">Output units:</label>
+		<select id="node-input-durationType" style="width:26%">
+			<option value="millis">millis</option>
+			<option value="seconds" selected>seconds</option>
+			<option value="minutes">minutes</option>
+			<option value="hours">hours</option>
+			<option value="days">days</option>
+		</select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-onStartup">On startup:</label>
+		<select id="node-input-onStartup" style="width:30%">
+			<option value="restore" selected>Restore</option>
+			<option value="reset">Clear</option>
+			<option value="defvalue">Set to</option>
+        </select>
+        <input type="text" id="node-input-startupValue" placeholder="0" style="width:30%">
+    </div>
+    <div class="form-row">
+        <label for="node-input-silentReset">On reset:</label>
+		<select id="node-input-silentReset" style="width:60%">
+			<option value="0" selected>Send current state</option>
+			<option value="1">Send nothing</option>
+		</select>
+    </div>
+    <div class="form-row">
+        <label style="width:35%" for="node-input-maxDuration">Reset if no data in</label>
+        <input type="text" id="node-input-maxDuration" placeholder="0" size="5" style="width:16%">
+		<select id="node-input-maxDurationType" style="width:26%">
+			<option value="millis">millis</option>
+			<option value="seconds">seconds</option>
+			<option value="minutes">minutes</option>
+			<option value="hours">hours</option>
+			<option value="days" selected>days</option>
+		</select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="prev-state">
+    <p>Node to collect, sort, save any incoming data.</p>
+</script>

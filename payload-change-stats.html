@@ -1,0 +1,58 @@
+<script type="text/javascript">
+    RED.nodes.registerType('payload-change-stats', {
+        category: 'MYY',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            collectEvery: {value:1,required:true,validate:RED.validators.number()},
+            collectEveryType: {value:"hours"},
+            savePeriod: {value:1,required:true,validate:RED.validators.number()},
+            savePeriodType: {value:"months"},
+            startupValue: {value:"none"},
+            startupValueDefault: {value:null},
+        },
+        inputs:1,
+        outputs:2,
+        icon: "db.png",
+        label: function() {
+            return this.name||"Change Stats";
+        },
+        paletteLabel: "Change Stats",
+        outputLabels: ["Stats", "Stats Before Reset"],
+        oneditprepare: function() {
+        }
+
+    });
+</script>
+
+<script type="text/x-red" data-template-name="payload-change-stats">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <!-- <div class="form-row">
+        <label for="node-input-collectEvery"><i class="fa fa-bolt"></i> Collect summary every</label>
+        <input type="hidden" id="node-input-collectEveryType">
+        <input type="text" id="node-input-collectEvery" placeholder="0" style="padding-left: 5px; width: 70%">
+    </div>
+    <div class="form-row">
+        <label for="node-input-savePeriod"><i class="fa fa-clock-o"></i> Save data for</label>
+        <input type="hidden" id="node-input-savePeriodType">
+        <input type="text" id="node-input-savePeriod" placeholder="0" style="padding-left: 5px; width: 50%">
+    </div>
+	<div class="form-row" id="startupValue-row">
+		<label for="node-input-startupValue"><i class="fa fa-clock-o"></i> On startup</label>
+		<select id="startupValue-selection">
+				<option value="none" selected>Wait for first value</option>
+				<option value="value">Use default value</option>
+			</select>
+    </div>    
+    <div class="form-row">
+        <label for="node-input-startupValueDefault"><i class="icon-tag"></i> Default Value</label>
+        <input type="text" id="node-input-startupValueDefault" placeholder="0">
+    </div> -->
+</script>
+
+<script type="text/x-red" data-help-name="payload-change-stats">
+    <p>Node counts every payload value and provides information about previous payload state and counters to output.</p>
+</script>

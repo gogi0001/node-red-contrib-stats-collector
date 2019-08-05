@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    RED.nodes.registerType('stats-collector',{
+        category: 'MYY',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            onStartup: {value:"restore"},
+            startupValue: {value:"0",required:false},
+            silentReset: {value:"0",required:false},
+        },
+        inputs:1,
+        outputs:1,
+        icon: "icons/leveldb.png",
+        label: function() {
+            return this.name||"Stats Collect";
+        },
+        paletteLabel: "Stats Collect",
+        outputLabels: ["History"],
+        oneditprepare: function() {
+            this.onStartup = !this.onStartup ? "restore" : this.onStartup;
+            this.startupValue = !this.startupValue ? "0" : this.startupValue;
+            this.silentReset = !this.silentReset ? "0" : this.silentReset;
+            $("#node-input-onStartup").val(this.onStartup);
+            if (this.onStartup != "defvalue") $("#node-input-startupValue").hide();
+
+            $("#node-input-onStartup").change(function () {
+				if ($("#node-input-onStartup").val() == "defvalue") {
+					$("#node-input-startupValue").show();
+				} else {
+                    $("#node-input-startupValue").hide();
+                }
+			})
+        }
+
+    });
+</script>
+
+<script type="text/x-red" data-template-name="stats-collector">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-onStartup">On startup:</label>
+		<select id="node-input-onStartup" style="width:40%">
+			<option value="restore" selected>Restore context</option>
+			<option value="reset">Clear</option>
+			<option value="defvalue">Set to</option>
+        </select>
+        <input type="text" id="node-input-startupValue" placeholder="0" style="width:25%">
+    </div>
+    <div class="form-row">
+        <label for="node-input-silentReset">On reset:</label>
+		<select id="node-input-silentReset" style="width:60%">
+			<option value="0" selected>Send current state</option>
+			<option value="1">Send nothing</option>
+		</select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="stats-collector">
+    <p>Node to collect, sort, save any incoming data.</p>
+
+    <h3>Input</h3>
+	<dl class="message-properties">
+		<dt>payload <span class="property-type">number | string</span></dt>
+		<dd>The current payload of the monitored object. Input allows only strings or numbers.</dd>
+	</dl>
+	<h3>Output</h3>
+	<dl class="message-properties">
+		<dt>payload <span class="property-type">collection</span></dt>
+		<dd>Collection of all payloads arrived after reset, with the presence counters. Each collection row contains <b>periodStart</b> and <b>periodDuration</b> properties.</dd>
+	</dl>
+
+</script>

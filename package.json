@@ -1,0 +1,24 @@
+{
+  "name": "stats-collector",
+  "version": "1.0.0",
+  "description": "Node-Red Nodes to collect, sort, save any incoming data.",
+  "main": "node",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "collect",
+    "statistic",
+    "history",
+    "save"
+  ],
+  "author": "Mixturator",
+  "license": "ISC",
+  "node-red" : {
+    "nodes": {
+        "stats-collector": "stats-collector.js",
+        "topic-change-stats": "payload-change-stats.js",
+        "prev-state": "prev-state.js"
+    }
+  }
+}
